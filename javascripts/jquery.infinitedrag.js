@@ -1,6 +1,6 @@
 /*
  * jQuery Infinite Drag
- * Version 0.1
+ * Version 0.2
  * Copyright (c) 2010 Ian Li (http://ianli.com)
  * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
  *
@@ -9,6 +9,12 @@
  *
  * Reference:
  * http://ianli.com/infinitedrag/ for Usage
+ *
+ * Versions:
+ * 0.2
+ * - Fixed problem with IE 8.0
+ * 0.1
+ * - Initial implementation
  */
 
 (function($) {
@@ -88,7 +94,7 @@
 				left: x,
 				top: y,
 				width: _to.width,
-				height: _to.height,
+				height: _to.height
 			});
 
 			_to.oncreate($new_tile, i, j);
