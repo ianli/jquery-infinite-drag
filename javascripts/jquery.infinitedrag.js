@@ -220,7 +220,7 @@
 			// HACK:
 			// Update the containment when the window is resized
 			// because the containment boundaries depend on the offset of the viewport.
-			update_containment();
+			update_tiles();
 		});
 		
 		// The drag event handler.
