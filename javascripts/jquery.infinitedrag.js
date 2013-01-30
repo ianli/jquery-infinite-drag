@@ -1,6 +1,6 @@
 /*
  * jQuery Infinite Drag
- * Version 0.2
+ * Version 0.3
  * Copyright (c) 2010 Ian Li (http://ianli.com)
  * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
  *
@@ -11,6 +11,8 @@
  * http://ianli.com/infinitedrag/ for Usage
  *
  * Versions:
+ * 0.3
+ * - Added removal of tiles that aren't visible - @JoeAO
  * 0.2
  * - Fixed problem with IE 8.0
  * 0.1
@@ -25,7 +27,7 @@
 		return new InfiniteDrag(draggable, draggable_options, tile_options);
 	};
 	
-	$.infinitedrag.VERSION = 0.1;
+	$.infinitedrag.VERSION = 0.3;
 	
 	/**
 	 * The InfiniteDrag object.
@@ -149,8 +151,52 @@
 					}
 				}
 			}
+
+			remove_tiles(pos);
 		};
 		
+
+		// Removes unseen tiles
+        //-----------------------
+        var remove_tiles = function(pos) {
+
+            $('._tile').each(function() {
+                var left = parseInt($(this).css('left')),
+                    top = parseInt($(this).css('top')),
+                    width = parseInt($(this).css('width')),
+                    height = parseInt($(this).css('height')),
+                    windowHeight = $(window).height(),
+                    windowWidth = $(window).width(),
+                    removal;
+
+                // Filters out all tiles to the left of view
+                if(((pos.left) + (left + width)) < 0) {
+                    removal = true;
+                }
+
+                // Filters out all tiles to the right of view
+                if(((pos.left) + (left )) > windowWidth) {
+                    removal = true;
+                }
+
+                // Filters out all tiles above view
+                if(((pos.top) + (top + height)) < 0) {
+                    removal = true;
+                }
+
+                // Filters out all tiles below view
+                if(((pos.top) + (top)) > windowHeight) {
+                    removal = true;
+                }
+
+                if (removal == true) {
+                    var i = $(this).attr('col'),
+                        j = $(this).attr('row');
+                    grid[i][j] = undefined;
+                    $(this).remove();
+                }
+            });
+        }
 		
 		// Public Methods
 		//-----------------
