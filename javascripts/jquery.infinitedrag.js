@@ -155,7 +155,6 @@
 			remove_tiles(pos);
 		};
 		
-
 		// Removes unseen tiles
         //-----------------------
         var remove_tiles = function(pos) {
