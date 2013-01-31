@@ -1,6 +1,6 @@
 /*
  * jQuery Infinite Drag
- * Version 0.3
+ * Version 0.4
  * Copyright (c) 2010 Ian Li (http://ianli.com)
  * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
  *
@@ -11,6 +11,8 @@
  * http://ianli.com/infinitedrag/ for Usage
  *
  * Versions:
+ * 0.4
+ * - Refactored additions in V0.3 - @JoeAO
  * 0.3
  * - Added removal of tiles that aren't visible - @JoeAO
  * 0.2
@@ -27,7 +29,7 @@
 		return new InfiniteDrag(draggable, draggable_options, tile_options);
 	};
 	
-	$.infinitedrag.VERSION = 0.3;
+	$.infinitedrag.VERSION = 0.4;
 	
 	/**
 	 * The InfiniteDrag object.
@@ -152,48 +154,25 @@
 				}
 			}
 
-			remove_tiles(pos);
-		};
-		
-		// Removes unseen tiles
+     		remove_tiles(visible_left_col, visible_top_row);
+        };
+
+        // Removes unseen tiles
         //-----------------------
-        var remove_tiles = function(pos) {
+        var remove_tiles = function(left, top) {
 
             $('._tile').each(function() {
-                var left = parseInt($(this).css('left')),
-                    top = parseInt($(this).css('top')),
-                    width = parseInt($(this).css('width')),
-                    height = parseInt($(this).css('height')),
-                    windowHeight = $(window).height(),
-                    windowWidth = $(window).width(),
-                    removal;
+                var maxLeft = ((left + 1) + ($(window).width() / _to.width)),
+                    maxTop = ((top + 1) + ($(window).height() / _to.height)),
+                    i = $(this).attr('col'),
+                    j = $(this).attr('row'),
+                    remove;
 
-                // Filters out all tiles to the left of view
-                if(((pos.left) + (left + width)) < 0) {
-                    removal = true;
-                }
-
-                // Filters out all tiles to the right of view
-                if(((pos.left) + (left )) > windowWidth) {
-                    removal = true;
-                }
-
-                // Filters out all tiles above view
-                if(((pos.top) + (top + height)) < 0) {
-                    removal = true;
-                }
-
-                // Filters out all tiles below view
-                if(((pos.top) + (top)) > windowHeight) {
-                    removal = true;
-                }
-
-                if (removal == true) {
-                    var i = $(this).attr('col'),
-                        j = $(this).attr('row');
+                if ((i < left) || (i > maxLeft) || (j < top) || (j > maxTop)) {
                     grid[i][j] = undefined;
                     $(this).remove();
                 }
+ 
             });
         }
 		
