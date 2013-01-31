@@ -162,7 +162,7 @@
         // Removes unseen tiles
         //-----------------------
         var remove_tiles = function(left, top) {
-
+            // Finds tiles which can be seen based on window width & height
             $('._tile').each(function() {
                 var maxLeft = (left + ($(window).width() / _to.width)),
                     maxTop = (top + ($(window).height() / _to.height)),
@@ -170,11 +170,12 @@
                     j = $(this).attr('row'),
                     remove;
 
+                // Classifies tile which can't be seen as undefined so it can be recreated
+                // Removes DOM element
                 if ((i < left) || (i > maxLeft) || (j < top) || (j > maxTop)) {
                     grid[i][j] = undefined;
                     $(this).remove();
                 }
- 
             });
         }
 		
