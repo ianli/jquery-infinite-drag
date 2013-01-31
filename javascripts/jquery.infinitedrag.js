@@ -11,6 +11,8 @@
  * http://ianli.com/infinitedrag/ for Usage
  *
  * Versions:
+ * 0.4a
+ * - Fixed bug caused by test code which wasn't deleted
  * 0.4
  * - Refactored additions in V0.3 - @JoeAO
  * 0.3
@@ -162,8 +164,8 @@
         var remove_tiles = function(left, top) {
 
             $('._tile').each(function() {
-                var maxLeft = ((left + 1) + ($(window).width() / _to.width)),
-                    maxTop = ((top + 1) + ($(window).height() / _to.height)),
+                var maxLeft = (left + ($(window).width() / _to.width)),
+                    maxTop = (top + ($(window).height() / _to.height)),
                     i = $(this).attr('col'),
                     j = $(this).attr('row'),
                     remove;
