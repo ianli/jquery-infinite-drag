@@ -11,6 +11,8 @@
  * http://ianli.com/infinitedrag/ for Usage
  *
  * Versions:
+ * 0.4b
+ * - V0.4a Test code was actually fixing a problem, just badly. Reapplied and cleaned.
  * 0.4a
  * - Fixed bug caused by test code which wasn't deleted
  * 0.4
@@ -143,6 +145,7 @@
 				top: $this.offset().top - $parent.offset().top
 			}
 
+			// - 1 because the previous tile is partially visible
 			var visible_left_col = Math.ceil(-pos.left / _to.width) - 1,
 				visible_top_row = Math.ceil(-pos.top / _to.height) - 1;
 
@@ -164,8 +167,9 @@
         var remove_tiles = function(left, top) {
             // Finds tiles which can be seen based on window width & height
             $('._tile').each(function() {
-                var maxLeft = (left + ($(window).width() / _to.width)),
-                    maxTop = (top + ($(window).height() / _to.height)),
+                // + 1 because the beginning of the last tile is partially visible
+                var maxLeft = (left + ($(window).width() / _to.width)) + 1,
+                    maxTop = (top + ($(window).height() / _to.height)) + 1,
                     i = $(this).attr('col'),
                     j = $(this).attr('row'),
                     remove;
