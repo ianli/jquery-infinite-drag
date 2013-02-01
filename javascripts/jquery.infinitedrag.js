@@ -1,6 +1,6 @@
 /*
  * jQuery Infinite Drag
- * Version 0.4
+ * Version 0.5
  * Copyright (c) 2010 Ian Li (http://ianli.com)
  * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
  *
@@ -11,6 +11,8 @@
  * http://ianli.com/infinitedrag/ for Usage
  *
  * Versions:
+ * 0.5
+ * - Improved remove_tiles() - @JoeAO
  * 0.4b
  * - V0.4a Test code was actually fixing a problem, just badly. Reapplied and cleaned.
  * 0.4a
@@ -33,7 +35,7 @@
 		return new InfiniteDrag(draggable, draggable_options, tile_options);
 	};
 	
-	$.infinitedrag.VERSION = 0.4;
+	$.infinitedrag.VERSION = 0.5;
 	
 	/**
 	 * The InfiniteDrag object.
@@ -168,8 +170,8 @@
             // Finds tiles which can be seen based on window width & height
             $('._tile').each(function() {
                 // + 1 because the beginning of the last tile is partially visible
-                var maxLeft = (left + ($(window).width() / _to.width)) + 1,
-                    maxTop = (top + ($(window).height() / _to.height)) + 1,
+                var maxLeft = (left + viewport_cols) + 1,
+                    maxTop = (top + viewport_rows),
                     i = $(this).attr('col'),
                     j = $(this).attr('row'),
                     remove;
