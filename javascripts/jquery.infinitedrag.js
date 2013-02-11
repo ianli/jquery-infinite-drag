@@ -1,6 +1,6 @@
 /*
  * jQuery Infinite Drag
- * Version 0.5
+ * Version 0.6
  * Copyright (c) 2010 Ian Li (http://ianli.com)
  * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
  *
@@ -11,6 +11,8 @@
  * http://ianli.com/infinitedrag/ for Usage
  *
  * Versions:
+ * 0.6
+ * - Added get_tile_dimensions public function - @JoeAO
  * 0.5
  * - Improved remove_tiles() - @JoeAO
  * 0.4b
@@ -35,7 +37,7 @@
 		return new InfiniteDrag(draggable, draggable_options, tile_options);
 	};
 	
-	$.infinitedrag.VERSION = 0.5;
+	$.infinitedrag.VERSION = 0.6;
 	
 	/**
 	 * The InfiniteDrag object.
@@ -226,6 +228,15 @@
 			
 			update_tiles();
 		};
+
+		self.get_tile_dimensions = function() {
+            var tileDims = {
+                width: _to.width,
+                height: _to.height
+            };
+
+            return tileDims;
+        };
 
 		// Setup
 		//--------
