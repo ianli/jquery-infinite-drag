@@ -170,7 +170,7 @@
         //-----------------------
         var remove_tiles = function(left, top) {
             // Finds tiles which can be seen based on window width & height
-            $('._tile').each(function() {
+            $('.' + _to.class_name).each(function() {
                 // + 1 because the beginning of the last tile is partially visible
                 var maxLeft = (left + viewport_cols) + 1,
                     maxTop = (top + viewport_rows),
