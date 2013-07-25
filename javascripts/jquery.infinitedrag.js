@@ -137,7 +137,12 @@
 			$draggable.draggable("option", "containment", containment);
 		};
 		
-		var update_tiles = function() {
+		var last_cleaned_tiles = {
+			left: 0,
+			top: 0
+		};
+		
+		var update_tiles = function(dragged_pos) {
 			var $this = $draggable;
 			var $parent = $this.parent();
 
@@ -163,7 +168,13 @@
 				}
 			}
 
-     		remove_tiles(visible_left_col, visible_top_row);
+     		if(
+			   Math.abs(dragged_pos.left - last_cleaned_tiles.left) > (10 * _to.width) || 
+			   Math.abs(dragged_pos.top - last_cleaned_tiles.top) > (10 * _to.height)
+			){
+				remove_tiles(visible_left_col, visible_top_row);
+				last_cleaned_tiles = dragged_pos;
+			}
         };
 
         // Removes unseen tiles
@@ -226,7 +237,7 @@
 			
 			$draggable.offset(new_offset);
 			
-			update_tiles();
+			update_tiles(new_offset);
 		};
 
 		self.get_tile_dimensions = function() {
@@ -269,7 +280,7 @@
 		
 		// The drag event handler.
 		_do.drag = function(e, ui) {
-			update_tiles();
+			update_tiles(ui.position);
 		};
 		
 		$draggable.draggable(_do);
