@@ -134,7 +134,7 @@
 				(-_to.range_row[0] * _to.height) + viewport_offset.top,
 			];
 			
-			$draggable.draggable("option", "containment", containment);
+			//$draggable.draggable("option", "containment", containment);
 		};
 		
 		var last_cleaned_tiles = {
@@ -167,14 +167,14 @@
 					}
 				}
 			}
-
+/*
      		if(
 			   Math.abs(dragged_pos.left - last_cleaned_tiles.left) > (10 * _to.width) || 
 			   Math.abs(dragged_pos.top - last_cleaned_tiles.top) > (10 * _to.height)
 			){
 				remove_tiles(visible_left_col, visible_top_row);
 				last_cleaned_tiles = dragged_pos;
-			}
+			}*/
         };
 
         // Removes unseen tiles
@@ -282,8 +282,8 @@
 		_do.drag = function(e, ui) {
 			update_tiles(ui.position);
 		};
-		
-		$draggable.draggable(_do);
+		_do.shouldEase = false;
+		$draggable.pep(_do);
 		
 		update_containment();
 	};
