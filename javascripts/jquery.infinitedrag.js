@@ -54,7 +54,10 @@
 		});
 		
 		// Draggable options
-		var _do = (draggable_options) ? draggable_options : {};
+		var _do = {
+			shouldEase : false
+		};
+		$.merge(_do, draggable_options);
 
 		// Tile options (DEFAULT)
 		var _to = {
@@ -65,16 +68,13 @@
 			start_row: 0,
 			range_col: [-1000000, 1000000],
 			range_row: [-1000000, 1000000],
+			draggable_lib: $.fn.pep ? "pep" : "draggable",
 			oncreate: function($element, i, j) {
 				$element.text(i + "," + j);
 			}
 		};
 		// Override tile options.
-		for (var i in tile_options) {
-			if (tile_options[i] !== undefined) {
-				_to[i] = tile_options[i];
-			}
-		}
+		$.merge(_to, tile_options);
 		
 		// Override tile options based on draggable options.
 		if (_do.axis == "x") {
@@ -133,8 +133,9 @@
 				(-_to.range_col[0] * _to.width) + viewport_offset.left,
 				(-_to.range_row[0] * _to.height) + viewport_offset.top,
 			];
-			
-			//$draggable.draggable("option", "containment", containment);
+			if(_to.draggable_lib == "draggable"){
+				$draggable.draggable("option", "containment", containment);
+			}
 		};
 		
 		var last_cleaned_tiles = {
@@ -167,14 +168,14 @@
 					}
 				}
 			}
-/*
+
      		if(
 			   Math.abs(dragged_pos.left - last_cleaned_tiles.left) > (10 * _to.width) || 
 			   Math.abs(dragged_pos.top - last_cleaned_tiles.top) > (10 * _to.height)
 			){
 				remove_tiles(visible_left_col, visible_top_row);
 				last_cleaned_tiles = dragged_pos;
-			}*/
+			}
         };
 
         // Removes unseen tiles
@@ -282,8 +283,7 @@
 		_do.drag = function(e, ui) {
 			update_tiles(ui.position);
 		};
-		_do.shouldEase = false;
-		$draggable.pep(_do);
+		$draggable[_to.draggable_lib](_do);
 		
 		update_containment();
 	};
