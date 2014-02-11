@@ -29,6 +29,8 @@
  * - Initial implementation
  */
 
+//= require jquery.ui.draggable
+
 (function($) {
 	/**
 	 * Function to create InfiniteDrag object.
@@ -57,7 +59,7 @@
 		var _do = {
 			shouldEase : false
 		};
-		$.merge(_do, draggable_options);
+		$.extend( _do, draggable_options);
 
 		// Tile options (DEFAULT)
 		var _to = {
@@ -68,13 +70,14 @@
 			start_row: 0,
 			range_col: [-1000000, 1000000],
 			range_row: [-1000000, 1000000],
+			remove_buffer : 10,
 			draggable_lib: $.fn.pep ? "pep" : "draggable",
 			oncreate: function($element, i, j) {
 				$element.text(i + "," + j);
 			}
 		};
 		// Override tile options.
-		$.merge(_to, tile_options);
+		$.extend( _to, tile_options);
 		
 		// Override tile options based on draggable options.
 		if (_do.axis == "x") {
@@ -91,12 +94,17 @@
 				return;
 			}
 			
-			grid[i][j] = true;
+			
 			var x = i * _to.width;
 			var y = j * _to.height;
 			var $e = $draggable.append('<div></div>');
 
 			var $new_tile = $e.children(":last");
+			
+			grid[i][j] = $new_tile.get(0);
+			if(typeof grid[i].cnt == "undefined") grid[i].cnt = 0;
+			grid[i].cnt++;
+			
 			$new_tile.attr({
 				"class": _to.class_name,
 				col: i,
@@ -161,17 +169,18 @@
 
 			for (var i = visible_left_col; i <= visible_left_col + viewport_cols; i++) {
 				for (var j = visible_top_row; j <= visible_top_row + viewport_rows; j++) {
-					if (grid[i] === undefined) {
+					if (typeof grid[i] == "undefined") {
 						grid[i] = {};
-					} else if (grid[i][j] === undefined) {
+					} else if (typeof grid[i][j] == "undefined") {
 						create_tile(i, j);
+						
 					}
 				}
 			}
-
+			
      		if(
-			   Math.abs(dragged_pos.left - last_cleaned_tiles.left) > (10 * _to.width) || 
-			   Math.abs(dragged_pos.top - last_cleaned_tiles.top) > (10 * _to.height)
+			   Math.abs(dragged_pos.left - last_cleaned_tiles.left) > (_to.remove_buffer * _to.width) || 
+			   Math.abs(dragged_pos.top - last_cleaned_tiles.top) > (_to.remove_buffer * _to.height)
 			){
 				remove_tiles(visible_left_col, visible_top_row);
 				last_cleaned_tiles = dragged_pos;
@@ -182,21 +191,21 @@
         //-----------------------
         var remove_tiles = function(left, top) {
             // Finds tiles which can be seen based on window width & height
-            $('.' + _to.class_name).each(function() {
-                // + 1 because the beginning of the last tile is partially visible
-                var maxLeft = (left + viewport_cols) + 1,
-                    maxTop = (top + viewport_rows),
-                    i = $(this).attr('col'),
-                    j = $(this).attr('row'),
-                    remove;
-
-                // Classifies tile which can't be seen as undefined so it can be recreated
-                // Removes DOM element
-                if ((i < left) || (i > maxLeft) || (j < top) || (j > maxTop)) {
-                    grid[i][j] = undefined;
-                    $(this).remove();
-                }
-            });
+			var maxLeft = (left + viewport_cols) + 1,
+				maxTop = (top + viewport_rows);
+				
+			$.each(grid,function(i,rows){
+				$.each(rows,function(j,elem){
+					if(j !== 'cnt'){
+						if((i < left) || (i > maxLeft) || (j < top) || (j > maxTop)){
+							delete grid[i][j];
+							grid[i].cnt--;
+							if(grid[i].cnt == 0) delete grid[i];
+							$(elem).remove();
+						}
+					}
+				});
+			});
         }
 		
 		// Public Methods

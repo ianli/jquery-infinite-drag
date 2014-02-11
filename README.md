@@ -8,5 +8,5 @@ jQuery Infinite Drag requires these Javascript libraries:
 
 http://ianli.com/infinitedrag
 
-Copyright (c) 2010 Ian Li (http://ianli.com)
+Copyright (c) 2010 Ian Li (http://ianli.com).
 Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
