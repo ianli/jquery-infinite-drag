@@ -101,24 +101,49 @@
 
 			var $new_tile = $e.children(":last");
 			
-			grid[i][j] = $new_tile.get(0);
-			if(typeof grid[i].cnt == "undefined") grid[i].cnt = 0;
-			grid[i].cnt++;
+			_storeTile($new_tile, i, j);
 			
 			$new_tile.attr({
 				"class": _to.class_name,
 				col: i,
 				row: j
-			}).css({
+			});
+			_setTileStyle($new_tile, i, j);
+
+			_to.oncreate($new_tile, i, j);
+		};
+		
+		// Tries to register a tile
+		function register_tile(elem){
+			var i = $(elem).attr('col');
+			var j = $(elem).attr('row');
+			if(typeof i === 'undefined' || typeof j === 'undefined'){
+				return;
+			}
+			if (typeof grid[i] == "undefined") {
+				grid[i] = {};
+			}
+			_storeTile(elem, i, j);
+			_setTileStyle(elem, i, j);
+		}
+		
+		function _setTileStyle(tile,i,j){
+			var x = i * _to.width;
+			var y = j * _to.height;
+			$(tile).css({
 				position: "absolute",
 				left: x,
 				top: y,
 				width: _to.width,
 				height: _to.height
 			});
-
-			_to.oncreate($new_tile, i, j);
-		};
+		}
+		
+		function _storeTile(tile,i,j){
+			grid[i][j] = $(tile).get(0);
+			if(typeof grid[i].cnt == "undefined") grid[i].cnt = 0;
+			grid[i].cnt++;
+		}
 		
 		// Updates the containment box wherein the draggable can be dragged.
 		var update_containment = function() {
@@ -152,6 +177,9 @@
 		};
 		
 		var update_tiles = function(dragged_pos) {
+			if (typeof dragged_pos == "undefined") {
+				dragged_pos = {left: 0,top: 0}
+			}
 			var $this = $draggable;
 			var $parent = $this.parent();
 
@@ -162,18 +190,19 @@
 				left: $this.offset().left - $parent.offset().left,
 				top: $this.offset().top - $parent.offset().top
 			}
+			console.log(pos);
 
 			// - 1 because the previous tile is partially visible
-			var visible_left_col = Math.ceil(-pos.left / _to.width) - 1,
-				visible_top_row = Math.ceil(-pos.top / _to.height) - 1;
+			var visible_left_col = Math.ceil(-pos.left / _to.width)-1,
+				visible_top_row = Math.ceil(-pos.top / _to.height)-1;
 
 			for (var i = visible_left_col; i <= visible_left_col + viewport_cols; i++) {
+				if (typeof grid[i] == "undefined") {
+					grid[i] = {};
+				}
 				for (var j = visible_top_row; j <= visible_top_row + viewport_rows; j++) {
-					if (typeof grid[i] == "undefined") {
-						grid[i] = {};
-					} else if (typeof grid[i][j] == "undefined") {
+					if (typeof grid[i][j] == "undefined") {
 						create_tile(i, j);
-						
 					}
 				}
 			}
@@ -273,12 +302,14 @@
 		});
 
 		var grid = {};
-		for (var i = _to.start_col, m = _to.start_col + viewport_cols; i < m && (_to.range_col[0] <= i && i <= _to.range_col[1]); i++) {
-			grid[i] = {}
-			for (var j = _to.start_row, n = _to.start_row + viewport_rows; j < n && (_to.range_row[0] <= j && j <= _to.range_row[1]); j++) {
-				create_tile(i, j);
-			}
-		}
+		
+		// Tries to register any existing tiles
+		$draggable.children("."+_to.class_name).each(function(){
+			register_tile(this);
+		});
+		
+		// Create initial tiles
+		update_tiles();
 		
 		// Handle resize of window.
 		$(window).resize(function() {
