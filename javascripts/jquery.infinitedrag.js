@@ -70,6 +70,7 @@
 			start_row: 0,
 			range_col: [-1000000, 1000000],
 			range_row: [-1000000, 1000000],
+			margin: 0,
 			remove_buffer : 10,
 			draggable_lib: $.fn.pep ? "pep" : "draggable",
 			oncreate: function($element, i, j) {
@@ -164,8 +165,8 @@
 		// Updates the containment box wherein the draggable can be dragged.
 		var update_containment = function() {
 			// Update viewport info.
-			viewport_width = $viewport.width(),
-			viewport_height = $viewport.height(),
+			viewport_width = $viewport.width()+_to.margin*2,
+			viewport_height = $viewport.height()+_to.margin*2,
 			viewport_cols = Math.ceil(viewport_width / _to.width),
 			viewport_rows = Math.ceil(viewport_height / _to.height);
 			
@@ -203,8 +204,8 @@
 			// 		var pos = $(this).position();
 			// So, we compute it ourselves.
 			var pos = {
-				left: $this.offset().left - $parent.offset().left,
-				top: $this.offset().top - $parent.offset().top
+				left: $this.offset().left - $parent.offset().left + _to.margin,
+				top: $this.offset().top - $parent.offset().top + _to.margin
 			}
 
 			// - 1 because the previous tile is partially visible
@@ -306,8 +307,8 @@
 		// Setup
 		//--------
 		
-		var viewport_width = $viewport.width(),
-			viewport_height = $viewport.height(),
+		var viewport_width = $viewport.width()+_to.margin*2,
+			viewport_height = $viewport.height()+_to.margin*2,
 			viewport_cols = Math.ceil(viewport_width / _to.width),
 			viewport_rows = Math.ceil(viewport_height / _to.height);
 
