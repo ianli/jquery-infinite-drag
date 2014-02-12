@@ -74,7 +74,9 @@
 			draggable_lib: $.fn.pep ? "pep" : "draggable",
 			oncreate: function($element, i, j) {
 				$element.text(i + "," + j);
-			}
+			},
+			on_aggregate: false,
+			aggregate_time: 10
 		};
 		// Override tile options.
 		$.extend( _to, tile_options);
@@ -85,6 +87,8 @@
 		} else if (_do.axis == "y") {
 			_to.range_col = [_to.start_col, _to.start_col];
 		}
+		
+		var aggregator_data = [], aggregator_timer = 0;
 		
 		// Creates the tile at (i, j).
 		function create_tile(i, j) {
@@ -110,6 +114,12 @@
 			});
 			_setTileStyle($new_tile, i, j);
 
+			if(_to.on_aggregate){
+				aggregator_data.push({tile:$new_tile, x:i, y:j});
+				if(aggregator_timer === 0){
+					aggregator_timer = setTimeout(_fireAgregate,_to.aggregate_time);
+				}
+			}
 			_to.oncreate($new_tile, i, j);
 		};
 		
@@ -143,6 +153,12 @@
 			grid[i][j] = $(tile).get(0);
 			if(typeof grid[i].cnt == "undefined") grid[i].cnt = 0;
 			grid[i].cnt++;
+		}
+		
+		function _fireAgregate(){
+			_to.on_aggregate(aggregator_data);
+			aggregator_timer = 0;
+			aggregator_data = [];
 		}
 		
 		// Updates the containment box wherein the draggable can be dragged.
@@ -190,7 +206,6 @@
 				left: $this.offset().left - $parent.offset().left,
 				top: $this.offset().top - $parent.offset().top
 			}
-			console.log(pos);
 
 			// - 1 because the previous tile is partially visible
 			var visible_left_col = Math.ceil(-pos.left / _to.width)-1,
