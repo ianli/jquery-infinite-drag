@@ -40,7 +40,7 @@
 	};
 	
 	$.infinitedrag.VERSION = 0.6;
-	
+ 
 	/**
 	 * The InfiniteDrag object.
 	 */
@@ -121,9 +121,9 @@
 					aggregator_timer = setTimeout(_fireAgregate,_to.aggregate_time);
 				}
 			}
-			_to.oncreate($new_tile, i, j);
+			_to.oncreate.call(self,$new_tile, i, j);
 		};
-		
+      
 		// Tries to register a tile
 		function register_tile(elem){
 			var i = $(elem).attr('col');
@@ -157,7 +157,7 @@
 		}
 		
 		function _fireAgregate(){
-			_to.on_aggregate(aggregator_data);
+			_to.on_aggregate.call(self,aggregator_data);
 			aggregator_timer = 0;
 			aggregator_data = [];
 		}
@@ -303,7 +303,7 @@
 
             return tileDims;
         };
-
+        
 		// Setup
 		//--------
 		
