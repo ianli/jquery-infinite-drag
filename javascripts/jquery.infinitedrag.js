@@ -40,7 +40,7 @@
 	};
 	
 	$.infinitedrag.VERSION = 0.6;
- 
+   
 	/**
 	 * The InfiniteDrag object.
 	 */
@@ -304,6 +304,13 @@
             return tileDims;
         };
         
+      self.get_tile = function(x,y){
+         if(typeof grid[x] !== 'undefined' && typeof grid[x][y] !== 'undefined'){
+            return $(grid[x][y]);
+         }
+         return null;
+      }
+
 		// Setup
 		//--------
 		
