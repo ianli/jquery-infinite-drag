@@ -40,6 +40,14 @@
 	};
 	
 	$.infinitedrag.VERSION = 0.6;
+   
+	$.infinitedrag.serializeTiles = function(tiles){
+      var pairs = [];
+      $.each(tiles,function(key,tile){
+         pairs.push(tile.x+';'+tile.y);
+      });
+      return pairs.join();
+   };
 	
 	/**
 	 * The InfiniteDrag object.
@@ -121,9 +129,9 @@
 					aggregator_timer = setTimeout(_fireAgregate,_to.aggregate_time);
 				}
 			}
-			_to.oncreate($new_tile, i, j);
+			_to.oncreate.call(self,$new_tile, i, j);
 		};
-		
+      
 		// Tries to register a tile
 		function register_tile(elem){
 			var i = $(elem).attr('col');
@@ -157,7 +165,7 @@
 		}
 		
 		function _fireAgregate(){
-			_to.on_aggregate(aggregator_data);
+			_to.on_aggregate.call(self,aggregator_data);
 			aggregator_timer = 0;
 			aggregator_data = [];
 		}
@@ -303,9 +311,21 @@
 
             return tileDims;
         };
+        
+      self.get_tile = function(x,y){
+         if(typeof grid[x] !== 'undefined' && typeof grid[x][y] !== 'undefined'){
+            return $(grid[x][y]);
+         }
+         return null;
+      }
 
 		// Setup
 		//--------
+		
+		//To make sure minimal setup will show something
+		if($viewport.height() == 0){
+			$viewport.css({'min-height':'300px'});
+		}
 		
 		var viewport_width = $viewport.width()+_to.margin*2,
 			viewport_height = $viewport.height()+_to.margin*2,
