@@ -125,16 +125,16 @@ This comes in very handy when creating tiles is done via AJAX and the number of 
 	<script type="text/javascript">
 		(function( $ ) {
 			$(function(){
-				//this creates a simple game where you have to find the origin
-				$.infinitedrag("#InfiniteDrag .content", {}, {
+            //this creates a simple game where you have to find the origin
+            $.infinitedrag("#InfiniteDrag .content", {}, {
                aggregate_time: 100,
-					on_aggregate:function(agg_data){
+               on_aggregate:function(agg_data){
                   var infinitedrag = this;
                   $.ajax({
-                    url: "datasource.php",
-                    type: "POST",
-                    data: { tiles : $.infinitedrag.serializeTiles(agg_data) },
-                    dataType: "json"
+                     url: "datasource.php",
+                     type: "POST",
+                     data: { tiles : $.infinitedrag.serializeTiles(agg_data) },
+                     dataType: "json"
                   }).done(function( texts ) {
                      $.each(texts,function(pos,text){
                         pos = pos.split(';');
@@ -145,7 +145,7 @@ This comes in very handy when creating tiles is done via AJAX and the number of 
                      });
                   });
                }
-				});
+            });
 			})
 		})( jQuery );
 	</script>
