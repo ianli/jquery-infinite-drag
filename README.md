@@ -119,12 +119,12 @@ This comes in very handy when creating tiles is done via AJAX and the number of 
 
 
 ```html
-<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-	<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-	<script src="javascripts/jquery.infinitedrag.js" type="text/javascript"></script>
-	<script type="text/javascript">
-		(function( $ ) {
-			$(function(){
+   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+   <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+   <script src="javascripts/jquery.infinitedrag.js" type="text/javascript"></script>
+   <script type="text/javascript">
+      (function( $ ) {
+         $(function(){
             //this creates a simple game where you have to find the origin
             $.infinitedrag("#InfiniteDrag .content", {}, {
                aggregate_time: 100,
@@ -146,12 +146,12 @@ This comes in very handy when creating tiles is done via AJAX and the number of 
                   });
                }
             });
-			})
-		})( jQuery );
-	</script>
-	<div id="InfiniteDrag" style="overflow:hidden;background:#cccccc;width:500px;height:500px">
-		<div class="content"></div>
-	</div>
+         })
+      })( jQuery );
+   </script>
+   <div id="InfiniteDrag" style="overflow:hidden;background:#cccccc;width:500px;height:500px">
+      <div class="content"></div>
+   </div>
 ```
 
 ```php
