@@ -322,6 +322,11 @@
 		// Setup
 		//--------
 		
+		//To make sure minimal setup will show something
+		if($viewport.height() == 0){
+			$viewport.css({'min-height':'300px'});
+		}
+		
 		var viewport_width = $viewport.width()+_to.margin*2,
 			viewport_height = $viewport.height()+_to.margin*2,
 			viewport_cols = Math.ceil(viewport_width / _to.width),
