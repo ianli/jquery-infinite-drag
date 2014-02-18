@@ -41,6 +41,14 @@
 	
 	$.infinitedrag.VERSION = 0.6;
    
+	$.infinitedrag.serializeTiles = function(tiles){
+      var pairs = [];
+      $.each(tiles,function(key,tile){
+         pairs.push(tile.x+';'+tile.y);
+      });
+      return pairs.join();
+   };
+	
 	/**
 	 * The InfiniteDrag object.
 	 */
