@@ -11,7 +11,7 @@ jQuery Infinite Drag requires these Javascript libraries:
 ```html
    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-   <script src="javascripts/jquery.infinitedrag.js" type="text/javascript"></script>
+   <script src="jquery.infinitedrag.js" type="text/javascript"></script>
    <script type="text/javascript">
       (function( $ ) {
          $(function(){
@@ -45,7 +45,7 @@ The maximum and minimum tile that will be created on both axis. By default the v
 ```html
    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-   <script src="javascripts/jquery.infinitedrag.js" type="text/javascript"></script>
+   <script src="jquery.infinitedrag.js" type="text/javascript"></script>
    <script type="text/javascript">
       (function( $ ) {
          $(function(){
@@ -71,7 +71,7 @@ Callback called on the creation of a tile to add the tile content. By default th
 ```html
    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-   <script src="javascripts/jquery.infinitedrag.js" type="text/javascript"></script>
+   <script src="jquery.infinitedrag.js" type="text/javascript"></script>
    <script type="text/javascript">
       (function( $ ) {
          $(function(){
@@ -109,6 +109,10 @@ Callback called on the creation of a tile to add the tile content. By default th
 ###remove_buffer
 Tiles not shown in the view port and out of the perimether defined by margin will by removed after your scroll a some distance. This option allow to set how often the operation is done. Defaults to 10 tiles.
 
+###cleaning_enabled
+Affects `remove_buffer`. Default is `true`.  
+If cleaning is disabled, tiles will never be removed from the DOM no matter how far you've scrolled from them.
+
 ###draggable_lib
 The name of the script doing the scrolling. by default it will check whenever you have jqueryUI or jquery.pep.js loaded.
 
@@ -121,7 +125,7 @@ This comes in very handy when creating tiles is done via AJAX and the number of 
 ```html
    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-   <script src="javascripts/jquery.infinitedrag.js" type="text/javascript"></script>
+   <script src="jquery.infinitedrag.js" type="text/javascript"></script>
    <script type="text/javascript">
       (function( $ ) {
          $(function(){
