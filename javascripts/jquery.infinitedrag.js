@@ -79,6 +79,7 @@
 			range_col: [-1000000, 1000000],
 			range_row: [-1000000, 1000000],
 			margin: 0,
+			cleaning_enabled: true,
 			remove_buffer: 10,
 			draggable_lib: $.fn.pep ? "pep" : "draggable",
 			oncreate: function($element, i, j) {
@@ -248,6 +249,11 @@
 		// Removes unseen tiles
 		//-----------------------
 		var remove_tiles = function(left, top) {
+			// Is cleaning disabled?
+			if (_to.cleaning_enabled) {
+				return;
+			}
+			
 			// Finds tiles which can be seen based on window width & height
 			var maxLeft = (left + viewport_cols) + 1,
 				maxTop = (top + viewport_rows);
