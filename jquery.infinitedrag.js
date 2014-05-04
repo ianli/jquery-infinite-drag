@@ -290,7 +290,11 @@
 				return $draggable;
 			}
 
-			$draggable.draggable("option", "disabled", value);
+			if ($.fn.pep) {
+				$.pep.toggleAll(!value)
+			} else {
+				$draggable.draggable("option", "disabled", value);
+			}
 
 			if (_do.cursor) {
 				$draggable.css({
