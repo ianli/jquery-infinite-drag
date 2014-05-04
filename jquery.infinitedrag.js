@@ -292,9 +292,11 @@
 
 			$draggable.draggable("option", "disabled", value);
 
-			$draggable.css({
-				cursor: (value) ? "default" : "move"
-			});
+			if (_do.cursor) {
+				$draggable.css({
+					cursor: (value) ? "default" : "move"
+				});
+			}
 		};
 
 		self.center = function(col, row) {
