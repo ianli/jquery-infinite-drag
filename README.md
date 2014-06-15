@@ -2,11 +2,13 @@
 
 Infinite Drag is a jQuery plugin that helps you create an infinite wall interface. As you drag the wall in a viewport, previously occluded tiles are created. You can hook onto events to generate custom tiles.
 
-jQuery Infinite Drag requires these Javascript libraries:
-* jQuery
-* jQuery UI or jquery.pep.js
+Some examples can be found at http://ianli.com/infinitedrag
 
 ##Minimal setup
+
+jQuery Infinite Drag requires these Javascript libraries:
+* jQuery
+* jQuery UI or [jquery.pep.js](http://pep.briangonzalez.org/)
 
 ```html
    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -23,6 +25,8 @@ jQuery Infinite Drag requires these Javascript libraries:
       <div class="content"></div>
    </div>
 ```
+
+---
 
 ##Options
 
@@ -187,7 +191,7 @@ define the time the script will wait before calling on_aggregate.
 
 ---
 
-http://ianli.com/infinitedrag
+## License
 
-Copyright (c) 2010 Ian Li (http://ianli.com).
+Copyright (c) 2010 Ian Li (http://ianli.com).  
 Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
