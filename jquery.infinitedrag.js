@@ -7,7 +7,7 @@
  *
  * Reference:
  * http://ianli.com/infinitedrag/ for usage and examples
- * http://github.com/Sleavely/jquery-infinitedrag/ for additional documentation
+ * http://github.com/Sleavely/jquery-infinite-drag/ for additional documentation
  */
 
 (function($) {
