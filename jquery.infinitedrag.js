@@ -1,35 +1,14 @@
 /*
  * jQuery Infinite Drag
- * Version 0.6
  * Copyright (c) 2010 Ian Li (http://ianli.com)
  * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
  *
- * Requires:
- * jQuery	http://jquery.com
+ * Requires jQuery with either jQuery UI Draggable or jQuery Pep
  *
  * Reference:
- * http://ianli.com/infinitedrag/ for Usage
- *
- * Versions:
- * 0.6
- * - Added get_tile_dimensions public function - @JoeAO
- * 0.5
- * - Improved remove_tiles() - @JoeAO
- * 0.4b
- * - V0.4a Test code was actually fixing a problem, just badly. Reapplied and cleaned.
- * 0.4a
- * - Fixed bug caused by test code which wasn't deleted
- * 0.4
- * - Refactored additions in V0.3 - @JoeAO
- * 0.3
- * - Added removal of tiles that aren't visible - @JoeAO
- * 0.2
- * - Fixed problem with IE 8.0
- * 0.1
- * - Initial implementation
+ * http://ianli.com/infinitedrag/ for usage and examples
+ * http://github.com/Sleavely/jquery-infinitedrag/ for additional documentation
  */
-
-//= require jquery.ui.draggable
 
 (function($) {
 	/**
@@ -38,8 +17,6 @@
 	$.infinitedrag = function(draggable, draggable_options, tile_options) {
 		return new InfiniteDrag(draggable, draggable_options, tile_options);
 	};
-
-	$.infinitedrag.VERSION = 0.6;
 
 	$.infinitedrag.serializeTiles = function(tiles) {
 		var pairs = [];
