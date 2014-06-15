@@ -185,25 +185,33 @@
 		}
 
 		// Updates the containment box wherein the draggable can be dragged.
-		var update_containment = function() {
+		self.update_containment = function() {
 			// Update viewport info.
-			viewport_width = $viewport.width() + _to.margin * 2,
-			viewport_height = $viewport.height() + _to.margin * 2,
-			viewport_cols = Math.ceil(viewport_width / _to.width),
+			viewport_zoom = $viewport.css('zoom');
+			viewport_width = $viewport.width() + _to.margin * 2;
+			viewport_height = $viewport.height() + _to.margin * 2;
+			viewport_cols = Math.ceil(viewport_width / _to.width);
 			viewport_rows = Math.ceil(viewport_height / _to.height);
 
 			// Create containment box.
 			var half_width = _to.width / 2,
 				half_height = _to.height / 2,
 				viewport_offset = $viewport.offset(),
-				viewport_draggable_width = viewport_width - _to.width,
-				viewport_draggable_height = viewport_height - _to.height;
+				viewport_draggable_width = (viewport_width / viewport_zoom) - _to.width,
+				viewport_draggable_height = (viewport_height / viewport_zoom) - _to.height;
 
 			var containment = [
-				(-_to.range_col[1] * _to.width) + viewport_offset.left + viewport_draggable_width, (-_to.range_row[1] * _to.height) + viewport_offset.top + viewport_draggable_height, (-_to.range_col[0] * _to.width) + viewport_offset.left, (-_to.range_row[0] * _to.height) + viewport_offset.top, ];
+				(-_to.range_col[1] * _to.width) + viewport_offset.left + viewport_draggable_width,
+				(-_to.range_row[1] * _to.height) + viewport_offset.top + viewport_draggable_height,
+				(-_to.range_col[0] * _to.width) + viewport_offset.left,
+				(-_to.range_row[0] * _to.height) + viewport_offset.top,
+			];
 			if (_to.draggable_lib == "draggable") {
 				$draggable.draggable("option", "containment", containment);
 			}
+			// Force check for new tiles in visible area,
+			// in case the containment was triggered by a zoom change.
+			update_tiles();
 		};
 
 		var last_cleaned_tiles = {
@@ -354,7 +362,8 @@
 			});
 		}
 
-		var viewport_width = $viewport.width() + _to.margin * 2,
+		var viewport_zoom = $viewport.css('zoom'),
+			viewport_width = $viewport.width() + _to.margin * 2,
 			viewport_height = $viewport.height() + _to.margin * 2,
 			viewport_cols = Math.ceil(viewport_width / _to.width),
 			viewport_rows = Math.ceil(viewport_height / _to.height);
@@ -379,7 +388,7 @@
 			// HACK:
 			// Update the containment when the window is resized
 			// because the containment boundaries depend on the offset of the viewport.
-			update_containment();
+			self.update_containment();
 		});
 
 		// The drag event handler.
@@ -388,6 +397,6 @@
 		};
 		$draggable[_to.draggable_lib](_do);
 
-		update_containment();
+		self.update_containment();
 	};
 })(jQuery);
