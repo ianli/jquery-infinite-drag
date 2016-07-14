@@ -1,6 +1,6 @@
 /*
  * jQuery Infinite Drag
- * Version 0.2
+ * Version 0.3
  * Copyright (c) 2010 Ian Li (http://ianli.com)
  * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
  *
@@ -11,6 +11,8 @@
  * http://ianli.com/infinitedrag/ for Usage
  *
  * Versions:
+ * 0.3
+ * - Added move
  * 0.2
  * - Fixed problem with IE 8.0
  * 0.1
@@ -25,7 +27,7 @@
 		return new InfiniteDrag(draggable, draggable_options, tile_options);
 	};
 	
-	$.infinitedrag.VERSION = 0.1;
+	$.infinitedrag.VERSION = 0.3;
 	
 	/**
 	 * The InfiniteDrag object.
@@ -119,7 +121,7 @@
 				(-_to.range_col[1] * _to.width) + viewport_offset.left + viewport_draggable_width,
 				(-_to.range_row[1] * _to.height) + viewport_offset.top + viewport_draggable_height,
 				(-_to.range_col[0] * _to.width) + viewport_offset.left,
-				(-_to.range_row[0] * _to.height) + viewport_offset.top,
+				(-_to.range_row[0] * _to.height) + viewport_offset.top
 			];
 			
 			$draggable.draggable("option", "containment", containment);
@@ -150,23 +152,63 @@
 				}
 			}
 		};
-		
-		
+
+
 		// Public Methods
 		//-----------------
-		
+
 		self.draggable = function() {
 			return $draggable;
 		};
-		
+
 		self.disabled = function(value) {
 			if (value === undefined) {
 				return $draggable;
 			}
-			
+
 			$draggable.draggable("option", "disabled", value);
-			
+
 			$draggable.css({ cursor: (value) ? "default" : "move" });
+		};
+
+		self.move = function(col, row) {
+			var offset = $draggable.offset();
+			var move = {
+				left: col * _to.width,
+				top: row * _to.height
+			};
+
+			var new_offset = {
+				left: offset.left - move.left,
+				top: offset.top - move.top
+			};
+
+			if (_do.axis == "x") {
+				new_offset.top = offset.top;
+			} else if (_do.axis == "y") {
+				new_offset.left = offset.left;
+			}
+
+			var containment = $draggable.draggable("option", "containment");
+
+			if (containment[0] <= new_offset.left && new_offset.left <= containment[2]
+				&& containment[1] <= new_offset.top && new_offset.top <= containment[3]) {
+				$draggable.offset(new_offset);
+				update_tiles();
+			} else {
+				// Don't let the tile go beyond the right edge.
+				if (new_offset.left < containment[0]) {
+					new_offset.left = containment[0];
+				}
+
+				// Don't let the tile go beyond the left edge.
+				if (new_offset.left > containment[2]) {
+					new_offset.left = containment[2];
+				}
+
+				$draggable.offset(new_offset);
+				update_tiles();
+			}
 		};
 		
 		self.center = function(col, row) {
